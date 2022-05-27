@@ -1,8 +1,10 @@
 <template>
   <div>
     <h1>Employee Of The Month Page</h1>
+    <!-- With custom directive here:
+     <h1 v-flash="300">Employee Of The Month Page</h1> -->
     <div v-if="personData">
-      <h3>{{ personData.name.title }} {{ personData.name.first }} {{ personData.name.last }}</h3>
+      <h3>{{ personData.name.first }} {{ personData.name.last }}</h3>
       <div>
         <img v-bind:src="personData.picture.large" />
       </div>
@@ -11,26 +13,11 @@
 </template>
 
 <script>
-import axios from 'axios';
+import randomPersonMixin from '../mixins/randomPersonMixin';
 
 export default {
   name: 'EmployeeOfTheMonthPage',
-  data() {
-    return {
-      personData: null,
-    };
-  },
-  created() {
-    axios.get('https://randomuser.me/api/')
-      // eslint-disable-next-line prefer-destructuring
-      .then((response) => { this.personData = response.data.results[0]; });
-
-    // Working example using fetch
-    // fetch('https://randomuser.me/api/')
-    //   .then((response) => response.json())
-    //   // eslint-disable-next-line prefer-destructuring
-    //   .then((respData) => { this.personData = respData.results[0]; });
-  },
+  mixins: [randomPersonMixin],
 };
 </script>
 

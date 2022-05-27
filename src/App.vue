@@ -1,31 +1,48 @@
 <template>
   <div>
-    <router-link to="/cart">Shopping Cart</router-link>
-    <router-link to="/">Home</router-link>
-    <router-view :shoppingCart="shoppingCart" :products="products" @addToCart="addToCart">
+    <NavBar :numberOfItems="numberOfItems" />
+    <router-view
+      :shoppingCart="shoppingCart"
+      :products="products"
+      :userInfo="userInfo"
+      @addToCart="addToCart"
+      @userInfoSaved="updateUserInfo">
     </router-view>
   </div>
 </template>
 
 <script>
 import products from './pages/products';
+import NavBar from './components/NavBar.vue';
 
 export default {
   name: 'App',
+  components: {
+    NavBar,
+  },
   data() {
     return {
       shoppingCartIds: [],
       products,
+      userInfo: { name: '', age: 0, address: '' },
     };
   },
   computed: {
     shoppingCart() {
       return this.shoppingCartIds.map((id) => (this.products.find((p) => p.id === id)));
     },
+    numberOfItems() {
+      return this.shoppingCartIds.length;
+    },
   },
   methods: {
     addToCart(id) {
       this.shoppingCartIds.push(id);
+    },
+    updateUserInfo(name, age, address) {
+      this.userInfo = {
+        name, age, address,
+      };
     },
   },
 };
@@ -39,10 +56,5 @@ export default {
   text-align: center;
   color: #2c3e50;
   margin-top: 60px;
-}
-
-a {
-  margin-left: 5px;
-  font-weight: bold;
 }
 </style>

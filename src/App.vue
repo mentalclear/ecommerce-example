@@ -1,17 +1,34 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <div>
+    <router-link to="/cart">Shopping Cart</router-link>
+    <router-link to="/">Home</router-link>
+    <router-view :shoppingCart="shoppingCart" :products="products" @addToCart="addToCart">
+    </router-view>
+  </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import products from './pages/products';
 
 export default {
   name: 'App',
-  components: {
-    HelloWorld
-  }
-}
+  data() {
+    return {
+      shoppingCartIds: [],
+      products,
+    };
+  },
+  computed: {
+    shoppingCart() {
+      return this.shoppingCartIds.map((id) => (this.products.find((p) => p.id === id)));
+    },
+  },
+  methods: {
+    addToCart(id) {
+      this.shoppingCartIds.push(id);
+    },
+  },
+};
 </script>
 
 <style>
@@ -22,5 +39,10 @@ export default {
   text-align: center;
   color: #2c3e50;
   margin-top: 60px;
+}
+
+a {
+  margin-left: 5px;
+  font-weight: bold;
 }
 </style>
